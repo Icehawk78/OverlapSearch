@@ -1,0 +1,53 @@
+<html ng-app="overlapSearch">
+    <head>
+        <title>Overlap Search</title>
+        <meta content="width=device-width,initial-scale=1" name="viewport">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="http://underscorejs.org/underscore.js"></script>
+        <script src="overlap_search.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid" ng-controller="OverlapSearchController as overlapSearch">
+            <div class="row">
+                <div class="form-group">
+                    <input class="form-control" id="min_match" placeholder="Minimum Match" ng-model="overlapSearch.minimum_overlap" ng-model-options="{ updateOn: 'blur' }" ng-change="overlapSearch.update_sets()" integer>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" id="max_match" placeholder="Maximum Match" ng-model="overlapSearch.maximum_overlap" ng-model-options="{ updateOn: 'blur' }" ng-change="overlapSearch.update_sets()" integer>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" id="scores" placeholder="scores" ng-model="overlapSearch.scores" ng-model-options="{ updateOn: 'blur' }" ng-change="overlapSearch.update_sets()" ng-list>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" id="values" placeholder="values" ng-model="overlapSearch.values" ng-model-options="{ updateOn: 'blur' }" ng-change="overlapSearch.update_sets()" ng-list>
+                </div>
+            </div>
+            <div class="row">
+                <table id="result_table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Sets</th>
+                            <th>Size</th>
+                            <th>Distribution</th>
+                            <!--<th>1</th>-->
+                            <!--<th>2</th>-->
+                            <!--<th>3</th>-->
+                            <!--<th>4</th>-->
+                            <!--<th>5</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="set in overlapSearch.all_results">
+                            <td ng-bind-html="overlapSearch.display_set(set)"></td>
+                            <td ng-bind="set.length"></td>
+                            <td ng-bind="overlapSearch.value_distribution(set)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
