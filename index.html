@@ -40,7 +40,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="set in overlapSearch.all_results | orderBy:set.length,overlapSearch.value_distribution(set)">
+                        <tr ng-repeat="set in overlapSearch.all_results | orderBy:set.length">
                             <td ng-bind-html="overlapSearch.display_set(set)"></td>
                             <td ng-bind="set.length"></td>
                             <td ng-bind="overlapSearch.value_distribution(set)"></td>
