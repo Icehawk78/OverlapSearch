@@ -50,7 +50,7 @@ angular.module('overlapSearch', [])
                 return _.sortBy(_.unique(remaining_matches.map(m => {
                     let new_values = _.clone(starting_values);
                     new_values.push(m);
-                    return overlapSearch.find_overlapping_set(new_values, remaining_matches).sort();
+                    return overlapSearch.find_all_overlapping_sets(new_values, remaining_matches).sort();
                 })), arr => {return -arr.length});
             } else {
                 return starting_values.sort();
@@ -68,7 +68,6 @@ angular.module('overlapSearch', [])
         };
 
         overlapSearch.base_sets = overlapSearch.permute(overlapSearch.values);
-        // overlapSearch.results = overlapSearch.find_overlapping_set([overlapSearch.base_sets[0]], overlapSearch.base_sets);
         overlapSearch.all_results = overlapSearch.find_all_overlapping_sets([overlapSearch.base_sets[0]], overlapSearch.base_sets);
     })
     .directive('integer', function(){
