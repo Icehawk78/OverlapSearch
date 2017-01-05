@@ -66,7 +66,7 @@ angular.module('overlapSearch', [])
                 return _.sortBy(remaining_matches.map(m => {
                     let new_values = _.clone(starting_values);
                     new_values.push(m);
-                    return overlapSearch.find_overlapping_set(new_values, remaining_matches);
+                    return overlapSearch.find_overlapping_set(new_values, remaining_matches).sort();
                 }), arr => {return -arr.length});
             } else {
                 return starting_values.sort();
