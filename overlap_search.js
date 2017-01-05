@@ -39,6 +39,21 @@ angular.module('overlapSearch', [])
             overlapSearch.all_results = overlapSearch.find_all_overlapping_sets([overlapSearch.base_sets[0]], overlapSearch.base_sets);
         };
 
+        overlapSearch.find_overlapping_set = function(starting_values, potential_matches) {
+            let remaining_matches = potential_matches.filter(a => {
+                return _.all(starting_values, function(b) {
+                    let overlap = overlapSearch.overlap(a, b);
+                    return overlap >= overlapSearch.minimum_overlap && overlap <= overlapSearch.maximum_overlap;
+                });
+            });
+            if (remaining_matches.length > 0) {
+                starting_values.push(remaining_matches[0]);
+                return overlapSearch.find_overlapping_set(starting_values, remaining_matches).sort();
+            } else {
+                return starting_values.sort();
+            }
+        };
+
         overlapSearch.find_all_overlapping_sets = function(starting_values, potential_matches) {
             let remaining_matches = potential_matches.filter(a => {
                 return _.all(starting_values, function(b) {
@@ -50,8 +65,9 @@ angular.module('overlapSearch', [])
                 return _.sortBy(_.unique(remaining_matches.map(m => {
                     let new_values = _.clone(starting_values);
                     new_values.push(m);
-                    return overlapSearch.find_all_overlapping_sets(new_values, remaining_matches).sort();
+                    return overlapSearch.find_overlapping_set(new_values, remaining_matches).sort();
                 })), arr => {return -arr.length});
+
             } else {
                 return starting_values.sort();
             }
@@ -68,6 +84,7 @@ angular.module('overlapSearch', [])
         };
 
         overlapSearch.base_sets = overlapSearch.permute(overlapSearch.values);
+        // overlapSearch.results = overlapSearch.find_overlapping_set([overlapSearch.base_sets[0]], overlapSearch.base_sets);
         overlapSearch.all_results = overlapSearch.find_all_overlapping_sets([overlapSearch.base_sets[0]], overlapSearch.base_sets);
     })
     .directive('integer', function(){
